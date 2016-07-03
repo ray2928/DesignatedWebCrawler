@@ -27,10 +27,10 @@ class Spider:
         "Connection": "keep-alive"
         }
         request = urllib2.Request(url, headers = request_headers)
-        response = urllib2.urlopen(request)
-        print "================response==============="
-        # print response.read()
-        return response.read().decode('gbk')
+        response = unicode(urllib2.urlopen(request).read(),'GBK').encode('UTF-8')
+        # print "================response==============="
+        # print  response
+        return response
 
     def setProxy(self):
         enable_proxy = True
@@ -46,10 +46,12 @@ class Spider:
 
     def getContents(self,pageIndex):
         page = self.getPage(pageIndex)
-        pattern = re.compile('<div class="list-item".*?pic-word.*?<a href="(.*?)".*?<img src="(.*?)".*?<a class="lady-name.*?>(.*?)</a>.*?<strong>(.*?)</strong>.*?<span>(.*?)</span>',re.S)
+        pattern = re.compile('<a class="news1" href=.*?html">(.*?)</a>\(.*?\)',re.S)
         items = re.findall(pattern,page)
+        print "=================Items================="
         for item in items:
-            print item[0],item[1],item[2],item[3],item[4]
+            print item.strip()
+        print "=================Items End================="
         print "======================================="
         print "Done! Page loaded!"
 
