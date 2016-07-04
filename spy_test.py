@@ -11,8 +11,8 @@ class Spider:
 
     def __init__(self):
         #self.siteURL = 'http://mm.taobao.com/json/request_top_list.htm'
-        #self.siteURL = 'http://www.1point3acres.com/bbs/forum-28-1.html'
-        self.siteURL = 'http://www.mitbbs.com/bbsdoc/JobHunting.html'
+        self.siteURL = 'http://www.1point3acres.com/bbs/forum-28-1.html'
+        # self.siteURL = 'http://www.mitbbs.com/bbsdoc/JobHunting.html'
     def getPage(self,pageIndex):
         self.setProxy()
         url = self.siteURL + "?page=" + str(pageIndex)
@@ -23,15 +23,20 @@ class Spider:
         "Accept-Language": "en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Referer": "http://www.mitbbs.com/bbsboa/1.html",
+        "Referer": "http://www.1point3acres.com/bbs/",
         "Connection": "keep-alive"
         }
-        request = urllib2.Request(url, headers = request_headers)
-        response = unicode(urllib2.urlopen(request).read(),'GBK').encode('UTF-8')
-        # print "================response==============="
-        # print  response
-        return response
-
+        try:
+            request = urllib2.Request(url, headers = request_headers)
+            response = unicode(urllib2.urlopen(request).read(),'GBK').encode('UTF-8')
+            print "================response==============="
+            print  response
+            return response
+        except urllib2.URLError, e:
+            if hasattr(e,"code"):
+                print e.code
+            if hasattr(e,"reason"):
+                print e.reason
     def setProxy(self):
         enable_proxy = True
         proxy = "http://www.google.com:8080"
@@ -46,7 +51,7 @@ class Spider:
 
     def getContents(self,pageIndex):
         page = self.getPage(pageIndex)
-        pattern = re.compile('<a class="news1" href=.*?html">(.*?)</a>\(.*?\)',re.S)
+        pattern = re.compile('class="s xst">(.*?)</a>',re.S)
         items = re.findall(pattern,page)
         print "=================Items================="
         for item in items:
