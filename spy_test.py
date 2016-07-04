@@ -50,12 +50,13 @@ class Spider:
         print "proxy has been set to ",proxy
 
     def getContents(self,pageIndex):
-        page = self.getPage(pageIndex)
-        pattern = re.compile('class="s xst">(.*?)</a>',re.S)
+        # page = self.getPage(pageIndex)
+        page = """<a href="http://www.1point3acres.com/bbs/forum.php?mod=viewthread&amp;tid=146546&amp;extra=page%3D1%26filter%3Dsortid%26sortid%3D192%26sortid%3D192" onclick="atarget(this)" class="s xst">Pocket Gems电话面试</a>"""
+        pattern = re.compile('<a href="(.*?)" onclick=(.*?) class="s xst">(.*?)</a>',re.S)
         items = re.findall(pattern,page)
         print "=================Items================="
         for item in items:
-            print item.strip()
+            print item[2].strip() + " " + item[0].strip()
         print "=================Items End================="
         print "======================================="
         print "Done! Page loaded!"
