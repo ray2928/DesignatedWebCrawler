@@ -51,19 +51,20 @@ class Spider:
 
     def getContents(self,pageIndex):
         page = self.getPage(pageIndex)
-        parse1 = '<tbody.*?tdpre y".*?void\(0\)\;(.*?)"previewThread.*?<em>.*?<a.*?>(.*?)</a>.*?</em>.*?<td.*?num.*?<a href="(.*?)".*?class'
-        pattern = re.compile(parse1,re.S)
-        items = re.findall(pattern,page)
-        print "=================Items1================="
-        for item in items:
-             print item[0].strip() + " " + item[2].strip() + " " + item[1].strip()
-        print "=================Items1 End================="
+        # parse1 = '<tbody.*?tdpre y".*?void\(0\)\;(.*?)"previewThread.*?<em>.*?<a.*?>(.*?)</a>.*?</em>.*?<td.*?num.*?<a href="(.*?)".*?class'
+        # pattern = re.compile(parse1,re.S)
+        # items = re.findall(pattern,page)
+        # print "=================Items1================="
+        # for item in items:
+        #      print item[0].strip() + " " + item[2].strip() + " " + item[1].strip()
+        # print "=================Items1 End================="
         parse2 = '<tbody.*?<em>.*?">(.*?)</a>.*?<a.*?"(.*?)".*?xst">(.*?)</a>'
         pattern = re.compile(parse2,re.S)
         items2 = re.findall(pattern,page)
         print "=================Items2================="
         for item in items2:
-             print item[0].strip() + " " + item[2].strip() + " " + item[1].strip()
+            if item[0].strip()=="找工就业":
+                print item[2].strip() + " " + item[1].strip()
         print "=================Items2 End================="
         print "======================================="
         print "Done! Page loaded!"
