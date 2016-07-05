@@ -29,8 +29,8 @@ class Spider:
         try:
             request = urllib2.Request(url, headers = request_headers)
             response = unicode(urllib2.urlopen(request).read(),'GBK').encode('UTF-8')
-            print "================response==============="
-            print  response
+            # print "================response==============="
+            # print  response
             return response
         except urllib2.URLError, e:
             if hasattr(e,"code"):
@@ -39,7 +39,7 @@ class Spider:
                 print e.reason
     def setProxy(self):
         enable_proxy = True
-        proxy = "http://www.google.com:8080"
+        proxy = "http://www.baidu.com:8080"
         proxy_handler = urllib2.ProxyHandler({"https" : proxy})
         null_proxy_handler = urllib2.ProxyHandler({})
         if enable_proxy:
@@ -50,14 +50,21 @@ class Spider:
         print "proxy has been set to ",proxy
 
     def getContents(self,pageIndex):
-        # page = self.getPage(pageIndex)
-        page = """<a href="http://www.1point3acres.com/bbs/forum.php?mod=viewthread&amp;tid=146546&amp;extra=page%3D1%26filter%3Dsortid%26sortid%3D192%26sortid%3D192" onclick="atarget(this)" class="s xst">Pocket Gems电话面试</a>"""
-        pattern = re.compile('<a href="(.*?)" onclick=(.*?) class="s xst">(.*?)</a>',re.S)
+        page = self.getPage(pageIndex)
+        parse1 = '<tbody.*?tdpre y".*?void\(0\)\;(.*?)"previewThread.*?<em>.*?<a.*?>(.*?)</a>.*?</em>.*?<td.*?num.*?<a href="(.*?)".*?class'
+        pattern = re.compile(parse1,re.S)
         items = re.findall(pattern,page)
-        print "=================Items================="
+        print "=================Items1================="
         for item in items:
-            print item[2].strip() + " " + item[0].strip()
-        print "=================Items End================="
+             print item[0].strip() + " " + item[2].strip() + " " + item[1].strip()
+        print "=================Items1 End================="
+        parse2 = '<tbody.*?<em>.*?">(.*?)</a>.*?<a.*?"(.*?)".*?xst">(.*?)</a>'
+        pattern = re.compile(parse2,re.S)
+        items2 = re.findall(pattern,page)
+        print "=================Items2================="
+        for item in items2:
+             print item[0].strip() + " " + item[2].strip() + " " + item[1].strip()
+        print "=================Items2 End================="
         print "======================================="
         print "Done! Page loaded!"
 
