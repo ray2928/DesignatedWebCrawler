@@ -5,6 +5,8 @@ import re
 import thread
 import time
 
+# TODO: use beautiful soup
+
 class YMSFDClawer:
     """A clawer for 1 point 3 arcs websites, aiming to find the related information for specific company"""
     def __init__(self):
